@@ -7,6 +7,11 @@
     <groupId>com.light</groupId>
     <artifactId>light</artifactId>
     <version>1.0.0</version>
+    <modules>
+        <module>light-system</module>
+        <module>light-common</module>
+        <module>light-farmework</module>
+    </modules>
 
     <name>Light</name>
     <url>https://github.com/esmusssein777/Light</url>

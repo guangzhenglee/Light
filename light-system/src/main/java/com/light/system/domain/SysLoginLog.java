@@ -28,7 +28,7 @@ public class SysLoginLog extends BaseEntity {
     private String status;
 
     @ApiModelProperty(value="登录ip", name="ipAddr", example="127.0.0.1")
-    private String ipAddr;
+    private String ipaddr;
 
     @ApiModelProperty(value="登陆地点", name="loginLocation", example="内网IP")
     private String loginLocation;

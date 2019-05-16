@@ -150,34 +150,91 @@ concat('%', #{configName}, '%')
 
 下面表格是我总结的各个属性的用途和注意点。
 
-foreach属性
+**foreach属性**
 
-| 属性       | **描述**                                                     |
+| 属性       | 描述                                                         |
 | ---------- | ------------------------------------------------------------ |
-| item       | 循环体中的具体对象。支持属性的点路径访问，如item.age,item.info.details。具体说明：在list和数组中是其中的对象，在map中是value。
-该参数为必选。 |
-| collection | 要做foreach的对象，作为入参时，List<?>对象默认用list代替作为键，数组对象有array代替作为键，Map对象没有默认的键。当然在作为入参时可以使用@Param("keyName")来设置键，设置keyName后，list,array将会失效。 除了入参这种情况外，还有一种作为参数对象的某个字段的时候。举个例子：
-如果User有属性List ids。入参是User对象，那么这个collection = "ids"
+| item       | 循环体中的具体对象。支持属性的点路径访问，如item.age,item.info.details。具体说明：在list和数组中是其中的对象，在map中是value |
+| collection | 要做foreach的对象，作为入参时，List<?>对象默认用list代替作为键，数组对象有array代替作为键，Map对象没有默认的键。当然在作为入参时可以使用@Param("keyName")来设置键，设置keyName后，list,array将会失效。 除了入参这种情况外，还有一种作为参数对象的某个字段的时候。举个例子：<br/>如果User有属性List ids。入参是User对象，那么这个collection = "ids"
 如果User有属性Ids ids;其中Ids是个对象，Ids有个属性List id;入参是User对象，那么collection = "ids.id"
 上面只是举例，具体collection等于什么，就看你想对那个元素做循环。
-该参数为必选。 |
+该参数为必选 |
 | separator  | 元素之间的分隔符，例如在in()的时候，separator=","会自动在元素中间用“,“隔开，避免手动输入逗号导致sql错误，如in(1,2,)这样。该参数可选 |
-| open       | foreach代码的开始符号，一般是(和close=")"合用。常用在in(),values()时。该参数可选。 |
-| close      | foreach代码的关闭符号，一般是)和open="("合用。常用在in(),values()时。该参数可选。 |
-| index      | 在list和数组中,index是元素的序号，在map中，index是元素的key，该参数可选。 |
+| open       | foreach代码的开始符号，一般是(和close=")"合用。常用在in(),values()时。该参数可选 |
+| close      | foreach代码的关闭符号，一般是)和open="("合用。常用在in(),values()时。该参数可选 |
+| index      | 在list和数组中,index是元素的序号，在map中，index是元素的key，该参数可选 |
 
 
 
-item	循环体中的具体对象。支持属性的点路径访问，如item.age,item.info.details。
-具体说明：在list和数组中是其中的对象，在map中是value。
-该参数为必选。
-collection	要做foreach的对象，作为入参时，List<?>对象默认用list代替作为键，数组对象有array代替作为键，Map对象没有默认的键。
-当然在作为入参时可以使用@Param("keyName")来设置键，设置keyName后，list,array将会失效。 除了入参这种情况外，还有一种作为参数对象的某个字段的时候。举个例子：
-如果User有属性List ids。入参是User对象，那么这个collection = "ids"
-如果User有属性Ids ids;其中Ids是个对象，Ids有个属性List id;入参是User对象，那么collection = "ids.id"
-上面只是举例，具体collection等于什么，就看你想对那个元素做循环。
-该参数为必选。
-separator	元素之间的分隔符，例如在in()的时候，separator=","会自动在元素中间用“,“隔开，避免手动输入逗号导致sql错误，如in(1,2,)这样。该参数可选。
-open	foreach代码的开始符号，一般是(和close=")"合用。常用在in(),values()时。该参数可选。
-close	foreach代码的关闭符号，一般是)和open="("合用。常用在in(),values()时。该参数可选。
-index	在list和数组中,index是元素的序号，在map中，index是元素的key，该参数可选。
+#### resultMap中association和collection
+
+resultMap中collection属性(一对多关系结果集映射)和association属性(多对一关系结果集映射)
+
+association – 映射到JavaBean 的某个“复杂类型”属性,其他JavaBean类
+
+collection –复杂类型集合
+
+举个例子
+
+```
+<resultMap type="com.light.system.domain.SysUser" id="SysUserResult">
+    <id property="userId" column="user_id"/>
+    <result property="deptId" column="dept_id"/>
+    <result property="loginName" column="login_name"/>
+    <result property="userName" column="user_name"/>
+    <association property="dept" column="dept_id" javaType="com.light.system.domain.SysDept" resultMap="deptResult"/>
+    <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
+</resultMap>
+
+<resultMap id="deptResult" type="com.light.system.domain.SysDept">
+    <id property="deptId" column="dept_id"/>
+    <result property="parentId" column="parent_id"/>
+    <result property="deptName" column="dept_name"/>
+    <result property="orderNum" column="order_num"/>
+    <result property="status" column="dept_status"/>
+</resultMap>
+
+<resultMap id="RoleResult" type="com.light.system.domain.SysRole">
+    <id property="roleId" column="role_id"/>
+    <result property="roleName" column="role_name"/>
+    <result property="roleKey" column="role_key"/>
+    <result property="roleSort" column="role_sort"/>
+    <result property="dataScope" column="data_scope"/>
+    <result property="status" column="role_status"/>
+</resultMap>
+```
+
+一个用户对应多个角色，属于一对多。
+
+但是多个用户都属于一个部门，属于多对一
+
+
+
+#### mysql中FIND_IN_SET的使用方法
+
+在[mysql](http://www.devdo.net/tag/mysql)中，有时我们在做数据库查询时，需要得到某字段中包含某个值的记录，但是它也不是用like能解决的，使用like可能查到我们不想要的记录，它比like更精准，这时候mysql的[FIND_IN_SET](http://www.devdo.net/tag/find_in_set)函数就派上用场了，下面来具体了解一下。
+
+**FIND_IN_SET(str,strlist)函数**
+
+str 要查询的字符串
+
+strlist 字段名 参数以”,”分隔 如 (1,2,6,8)
+
+
+
+#### mysql中replace into的作用
+
+replace into 跟 insert 功能类似，不同点在于：replace into 首先尝试插入数据到表中， 1. 如果发现表中已经有此行数据（根据主键或者唯一索引判断）则先删除此行数据，然后插入新的数据。 2. 否则，直接插入新数据。
+
+
+
+#### Mybatis中<!CDATA[[]]>的使用
+
+<!CDATA[[]]>的意思是遇到 <= ,>=这些运算符按照原文本写入
+
+```
+WHERE o.last_access_time <![CDATA[ <= ]]> #{lastAccessTime}
+```
+
+意思是将 <= 转义，但是还不如用 `&lt;`来写
+

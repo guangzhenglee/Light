@@ -9,9 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>light-farmework</artifactId>
-    <version>1.0.0</version>
-    <description>核心控制框架</description>
+    <artifactId>light-framework</artifactId>
+    <description>framework框架核心</description>
 
     <dependencies>
         <!-- SpringBoot Web容器 -->

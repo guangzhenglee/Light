@@ -10,7 +10,8 @@
     <modules>
         <module>light-system</module>
         <module>light-common</module>
-        <module>light-farmework</module>
+        <module>light-admin</module>
+        <module>light-framework</module>
     </modules>
 
     <name>Light</name>

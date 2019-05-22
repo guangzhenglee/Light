@@ -4,11 +4,14 @@ import com.light.common.constant.Constants;
 import com.light.common.utils.AddressUtils;
 import com.light.common.utils.ServletUtils;
 import com.light.common.utils.SpringUtils;
+import com.light.framework.shiro.session.OnlineSession;
 import com.light.framework.util.LogUtils;
 import com.light.framework.util.ShiroUtils;
 import com.light.system.domain.SysLoginLog;
 import com.light.system.domain.SysOperLog;
+import com.light.system.domain.SysUserOnline;
 import com.light.system.service.ISysOperLogService;
+import com.light.system.service.ISysUserOnlineService;
 import com.light.system.service.impl.SysLoginLogServiceImpl;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
@@ -86,6 +89,34 @@ public class AsyncFactory {
                 //远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+            }
+        };
+    }
+
+    /**
+     * 同步session到数据库
+     *
+     * @param session 在线用户会话
+     * @return 任务task
+     */
+    public static TimerTask syncSessionToDb(final OnlineSession session) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                SysUserOnline online = new SysUserOnline();
+                online.setSessionId(String.valueOf(session.getId()));
+                online.setDeptName(session.getDeptName());
+                online.setLoginName(session.getLoginName());
+                online.setStartTimestamp(session.getStartTimestamp());
+                online.setLastAccessTime(session.getLastAccessTime());
+                online.setExpireTime(session.getTimeout());
+                online.setIpaddr(session.getHost());
+                online.setLoginLocation(AddressUtils.getRealAddressByIP(session.getHost()));
+                online.setBrowser(session.getBrowser());
+                online.setOs(session.getOs());
+                online.setStatus(session.getStatus());
+                SpringUtils.getBean(ISysUserOnlineService.class).saveOnline(online);
+
             }
         };
     }

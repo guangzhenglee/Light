@@ -7,6 +7,8 @@ import com.light.common.utils.SpringUtils;
 import com.light.framework.util.LogUtils;
 import com.light.framework.util.ShiroUtils;
 import com.light.system.domain.SysLoginLog;
+import com.light.system.domain.SysOperLog;
+import com.light.system.service.ISysOperLogService;
 import com.light.system.service.impl.SysLoginLogServiceImpl;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
@@ -72,5 +74,20 @@ public class AsyncFactory {
         };
     }
 
+    /**
+     * 操作日志的记录方法
+     * @param operLog 操作日志
+     * @return 任务
+     */
+    public static TimerTask recordOper(final SysOperLog operLog) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                //远程查询操作地点
+                operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+                SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+            }
+        };
+    }
 
 }

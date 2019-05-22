@@ -124,3 +124,10 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+#线程池
+thread:
+  pool:
+    keepAliveSeconds: 2000
+    maxPoolSize: 10
+    corePoolSize: 4

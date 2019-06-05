@@ -12,7 +12,7 @@ import static com.light.common.constant.Constants.LOCAL_IP;
 /**
  * 获取IP方法
  *
- * @author ruoyi
+ * @author ligz
  */
 @Slf4j
 public class IpUtils {

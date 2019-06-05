@@ -6,7 +6,7 @@ import com.light.common.utils.StringUtil;
 /**
  * 基础异常
  *
- * @author ruoyi
+ * @author ligz
  */
 public class BaseException extends RuntimeException {
     private static final long serialVersionUID = 1L;

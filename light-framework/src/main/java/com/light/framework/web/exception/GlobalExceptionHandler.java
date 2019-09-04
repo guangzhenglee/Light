@@ -32,7 +32,6 @@ public class GlobalExceptionHandler {
             return AjaxResult.error(PermissionUtils.getMsg(e.getMessage()));
         } else {
             ModelAndView modelAndView = new ModelAndView();
-            //TODO:修改错误的页面地址
             modelAndView.setViewName("error/unauth");
             return modelAndView;
         }

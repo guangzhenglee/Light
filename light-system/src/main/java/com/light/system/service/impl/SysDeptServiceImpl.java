@@ -64,7 +64,6 @@ public class SysDeptServiceImpl implements ISysDeptService {
      * @return 部门树
      */
     private List<Ztree> initZtree(List<SysDept> deptList, List<String> roleDeptList) {
-        //TODO:需要根据权限加载树，是否可选还要再看一下
         List<Ztree> ztrees = new ArrayList<>();
         boolean isCheck = CollectionUtils.isNotEmpty(roleDeptList);
         if (CollectionUtils.isNotEmpty(deptList)) {

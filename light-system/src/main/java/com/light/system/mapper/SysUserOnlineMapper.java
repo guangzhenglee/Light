@@ -42,5 +42,5 @@ public interface SysUserOnlineMapper {
      * @param lastAccessTime 过期时间
      * @return 会话集合
      */
-    List<SysUserOnline> selectOnlineByExpired(String lastAccessTime);//TODO:<=可以改成 &lt;=
+    List<SysUserOnline> selectOnlineByExpired(String lastAccessTime);
 }

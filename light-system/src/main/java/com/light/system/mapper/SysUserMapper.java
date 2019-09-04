@@ -13,14 +13,14 @@ public interface SysUserMapper {
      * @param sysUser 用户信息
      * @return 用户信息集合信息
      */
-    List<SysUser> selectUserList(SysUser sysUser);//TODO:关于dept_id的查询
+    List<SysUser> selectUserList(SysUser sysUser);
 
     /**
      * 根据条件分页查询已配用户角色列表
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    List<SysUser> selectAllocatedList(SysUser user);//TODO:roleID哪来的，没有完全理解
+    List<SysUser> selectAllocatedList(SysUser user);
 
     /**
      * 根据条件分页查询未分配用户角色列表

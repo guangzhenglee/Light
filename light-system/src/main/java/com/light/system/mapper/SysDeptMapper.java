@@ -42,7 +42,7 @@ public interface SysDeptMapper {
      * @param depts 子元素
      * @return
      */
-    int updateDeptChildren(@Param("depts") List<SysDept> depts);//TODO:这里好像有问题
+    int updateDeptChildren(@Param("depts") List<SysDept> depts);
 
     /**
      * 获取子部门的个数
